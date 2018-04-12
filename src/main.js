@@ -1,5 +1,5 @@
 import arrayMove from 'array-move'
-import { app, BrowserWindow, Tray, Menu, ipcMain } from 'electron'
+import { app, screen, BrowserWindow, Tray, Menu, ipcMain } from 'electron'
 import Store from 'electron-store'
 import unionBy from 'lodash/unionBy'
 
@@ -292,6 +292,8 @@ app.on('ready', async () => {
 app.on('open-url', (event, url) => {
   event.preventDefault()
   if (appIsReady) {
+    const mousePoint = screen.getCursorScreenPoint()
+    pickerWindow.setPosition(mousePoint.x, mousePoint.y)
     pickerWindow.webContents.send('incomingURL', url)
   } else {
     // app not ready yet, this will be handled later in the createWindow callback
